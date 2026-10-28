@@ -6,6 +6,8 @@ import { useStudio } from '../state/studio';
 import { renderAll, pickOutputFolder, type RenderFailure } from '../lib/exportRender';
 import { pushStateNow } from '../lib/stateSync';
 import { APP_STORE_IPHONE_CANVAS, formatDimensions } from '../lib/deviceProfiles';
+import { useI18n } from '../../../shared/i18n/I18n';
+import { translateLegacyScreenshotUi } from '../i18n';
 
 /**
  * Phase 7 placeholder + project archive flow. Real PNG render via Playwright
@@ -13,6 +15,7 @@ import { APP_STORE_IPHONE_CANVAS, formatDimensions } from '../lib/deviceProfiles
  * `archivedProjects` and resets active state so the user lands fresh in Setup.
  */
 export function ExportScreen() {
+  const { language } = useI18n();
   const nav = useNavigate();
   const appName = useStudio((s) => s.appName);
   const outputFolder = useStudio((s) => s.outputFolder);
@@ -111,8 +114,12 @@ export function ExportScreen() {
     // hit Retry, and then manually choose to archive once everything's clean.
     if (res.failed > 0) return;
     const appSlug = (useStudio.getState().appName || 'app').replace(/\s+/g, '-');
-    const summary = `${res.rendered} PNG${res.rendered === 1 ? '' : 's'} saved to ${outputFolder}/${appSlug}/images/ (iPhone) and /images-ipad/ (iPad).`;
-    if (window.confirm(`${summary}\n\nЗавершить проект и сохранить в Recent?`)) {
+    const summary = language === 'pl'
+      ? `Zapisano ${res.rendered} plików PNG w ${outputFolder}/${appSlug}/images/ (iPhone) i /images-ipad/ (iPad).`
+      : language === 'ru'
+        ? `Сохранено PNG-файлов: ${res.rendered}. Папки: ${outputFolder}/${appSlug}/images/ (iPhone) и /images-ipad/ (iPad).`
+        : `${res.rendered} PNG${res.rendered === 1 ? '' : 's'} saved to ${outputFolder}/${appSlug}/images/ (iPhone) and /images-ipad/ (iPad).`;
+    if (window.confirm(`${summary}\n\n${translateLegacyScreenshotUi(language, 'Завершить проект и сохранить в Recent?')}`)) {
       archiveCurrentProject();
       void pushStateNow(); // persist the reset immediately so no stale active draft lingers
       setArchived(true);

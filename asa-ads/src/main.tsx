@@ -14,17 +14,18 @@ import "./ds-bridge.css";
 import "./polish.css";
 import { I18nProvider } from "../../shared/i18n/I18n.tsx";
 import { adsMessages } from "./i18n.ts";
+import { AdsLocalization } from "./localization.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <I18nProvider messages={adsMessages}>
-      <BrowserRouter basename="/asa">
+      <AdsLocalization><BrowserRouter basename="/asa">
         <AppProvider>
           <CountryProvider>
             <App />
           </CountryProvider>
         </AppProvider>
-      </BrowserRouter>
+      </BrowserRouter></AdsLocalization>
     </I18nProvider>
   </StrictMode>,
 );
