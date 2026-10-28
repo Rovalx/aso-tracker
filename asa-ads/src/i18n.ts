@@ -114,6 +114,9 @@ export const adsMessages: Record<UiLanguage, Messages> = {
     'actions.kind.campaignNegative': 'Campaign negative', 'actions.kind.pauseKeyword': 'Pause keyword',
     'actions.kind.pauseCampaign': 'Pause campaign', 'actions.kind.resumeCampaign': 'Resume campaign', 'actions.kind.dailyBudget': 'Daily budget',
     'actions.status.pending': 'awaiting confirmation', 'actions.status.applied': 'applied', 'actions.status.failed': 'failed', 'actions.status.cancelled': 'cancelled',
+    'common.installs': 'Installs', 'common.cpi': 'CPI', 'common.trialStarts': 'Trial starts', 'common.ttr': 'TTR',
+    'heroChart.lastPoint': 'Latest point', 'heroChart.currentPeriod': 'current period', 'heroChart.weekAgo': 'One week earlier',
+    'heroChart.note': 'The solid line is the current period; the dashed line shows the same days one week earlier. This compares trends, not forecasts.',
   },
   pl: {
     'ads.sync.starting': 'Uruchamianie synchronizacji',
@@ -228,6 +231,9 @@ export const adsMessages: Record<UiLanguage, Messages> = {
     'actions.kind.campaignNegative': 'Wykluczenie kampanii', 'actions.kind.pauseKeyword': 'Wstrzymanie słowa',
     'actions.kind.pauseCampaign': 'Wstrzymanie kampanii', 'actions.kind.resumeCampaign': 'Wznowienie kampanii', 'actions.kind.dailyBudget': 'Budżet dzienny',
     'actions.status.pending': 'oczekuje na potwierdzenie', 'actions.status.applied': 'zastosowano', 'actions.status.failed': 'błąd', 'actions.status.cancelled': 'anulowano',
+    'common.installs': 'Instalacje', 'common.cpi': 'CPI', 'common.trialStarts': 'Rozpoczęte okresy próbne', 'common.ttr': 'TTR',
+    'heroChart.lastPoint': 'Ostatni punkt', 'heroChart.currentPeriod': 'bieżący okres', 'heroChart.weekAgo': 'Tydzień wcześniej',
+    'heroChart.note': 'Linia ciągła oznacza bieżący okres, a przerywana te same dni tydzień wcześniej. To porównanie trendu, nie prognoza.',
   },
   ru: {
     'ads.sync.starting': 'Запуск синхронизации',
@@ -342,5 +348,8 @@ export const adsMessages: Record<UiLanguage, Messages> = {
     'actions.kind.campaignNegative': 'Минус-слово кампании', 'actions.kind.pauseKeyword': 'Пауза ключа',
     'actions.kind.pauseCampaign': 'Пауза кампании', 'actions.kind.resumeCampaign': 'Запуск кампании', 'actions.kind.dailyBudget': 'Дневной бюджет',
     'actions.status.pending': 'ждёт подтверждения', 'actions.status.applied': 'применено', 'actions.status.failed': 'ошибка', 'actions.status.cancelled': 'отменено',
+    'common.installs': 'Установки', 'common.cpi': 'CPI', 'common.trialStarts': 'Старты триала', 'common.ttr': 'TTR',
+    'heroChart.lastPoint': 'Последняя точка', 'heroChart.currentPeriod': 'текущий период', 'heroChart.weekAgo': 'Неделей ранее',
+    'heroChart.note': 'Сплошная линия — текущий период; пунктир — те же дни неделей ранее. Это сравнение тренда, а не прогноз.',
   },
 };
