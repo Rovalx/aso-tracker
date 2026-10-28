@@ -19,8 +19,10 @@ import CountrySwitcher from "./components/CountrySwitcher.tsx";
 import { useCountry } from "./lib/CountryContext.tsx";
 import { StudioSwitcher } from "../../shared/shell/StudioSwitcher.tsx";
 import { api } from "./api.ts";
+import { useI18n } from "../../shared/i18n/I18n.tsx";
 
 export default function App() {
+  const { t } = useI18n();
   const [syncing, setSyncing] = useState(false);
   const [phase, setPhase] = useState<{ label: string; progress: number } | null>(null);
   const [lastSync, setLastSync] = useState<string>("");
@@ -42,14 +44,14 @@ export default function App() {
   const { connected } = useSse((event, data) => {
     if (event === "sync:start") {
       setSyncing(true);
-        setPhase({ label: "Запуск синхронизации", progress: 0.02 });
+        setPhase({ label: t("ads.sync.starting"), progress: 0.02 });
     }
     if (event === "sync:phase") {
       const d = data as { label: string; progress: number };
       setPhase(d);
     }
     if (event === "sync:done") {
-      setPhase({ label: "Синхронизировано", progress: 1 });
+      setPhase({ label: t("ads.sync.done"), progress: 1 });
       setLastSync(new Date().toLocaleTimeString());
       setReloadKey((k) => k + 1);
       reloadCountries();
@@ -59,7 +61,7 @@ export default function App() {
       }, 800);
     }
     if (event === "sync:error") {
-      setPhase({ label: "Ошибка синхронизации", progress: 1 });
+      setPhase({ label: t("ads.sync.error"), progress: 1 });
       setTimeout(() => { setSyncing(false); setPhase(null); }, 2000);
     }
     if (event === "action:applied" || event === "action:failed") {
@@ -70,12 +72,12 @@ export default function App() {
   async function doSync(): Promise<void> {
     if (syncing) return;
     setSyncing(true);
-    setPhase({ label: "Подключение к Apple Ads…", progress: 0.02 });
+    setPhase({ label: t("ads.sync.connecting"), progress: 0.02 });
     try {
       await api.sync(14);
     } catch (e) {
       console.error(e);
-      setPhase({ label: `Ошибка: ${(e as Error).message}`, progress: 1 });
+      setPhase({ label: t("ads.sync.errorDetail", { message: (e as Error).message }), progress: 1 });
       setTimeout(() => { setSyncing(false); setPhase(null); }, 3000);
     }
   }
@@ -91,22 +93,22 @@ export default function App() {
         <AppSwitcher />
         <CountrySwitcher />
         <nav>
-          <NavLink to="/" end>Обзор</NavLink>
-          <NavLink to="/command">Матрица решений</NavLink>
-          <NavLink to="/profitability">Экономика</NavLink>
-          <NavLink to="/keyword-matrix">Матрица ключей</NavLink>
-          <NavLink to="/traffic">Трафик</NavLink>
-          <NavLink to="/keywords">Ключевые слова</NavLink>
-          <NavLink to="/search-terms">Поисковые запросы</NavLink>
-          <NavLink to="/negatives">Минус-слова</NavLink>
-          <NavLink to="/actions">Очередь действий</NavLink>
-          <NavLink to="/alerts">Оповещения</NavLink>
-          <NavLink to="/settings">Настройки и API</NavLink>
+          <NavLink to="/" end>{t("ads.nav.overview")}</NavLink>
+          <NavLink to="/command">{t("ads.nav.command")}</NavLink>
+          <NavLink to="/profitability">{t("ads.nav.profitability")}</NavLink>
+          <NavLink to="/keyword-matrix">{t("ads.nav.keywordMatrix")}</NavLink>
+          <NavLink to="/traffic">{t("ads.nav.traffic")}</NavLink>
+          <NavLink to="/keywords">{t("ads.nav.keywords")}</NavLink>
+          <NavLink to="/search-terms">{t("ads.nav.searchTerms")}</NavLink>
+          <NavLink to="/negatives">{t("ads.nav.negatives")}</NavLink>
+          <NavLink to="/actions">{t("ads.nav.actions")}</NavLink>
+          <NavLink to="/alerts">{t("ads.nav.alerts")}</NavLink>
+          <NavLink to="/settings">{t("ads.nav.settings")}</NavLink>
         </nav>
         <div className="spacer" />
         <div className="status">
-          <div className={`live ${connected ? "" : "off"}`}>{connected ? "Онлайн" : "Нет соединения"}</div>
-          {lastSync && <div className="meta">Обновлено · {lastSync}</div>}
+          <div className={`live ${connected ? "" : "off"}`}>{t(connected ? "ads.connection.online" : "ads.connection.offline")}</div>
+          {lastSync && <div className="meta">{t("ads.updated", { time: lastSync })}</div>}
         </div>
         {syncing && phase ? (
           <div className="sync-progress">
@@ -118,7 +120,7 @@ export default function App() {
           </div>
         ) : (
           <button className="sync-btn primary" onClick={doSync} disabled={syncing}>
-            Обновить данные
+            {t("ads.refresh")}
           </button>
         )}
       </aside>
@@ -130,7 +132,7 @@ export default function App() {
           <Route path="/campaigns/:id" element={<CampaignDetail />} />
           <Route path="/keywords" element={<Keywords reloadKey={reloadKey} />} />
           <Route path="/keyword-matrix" element={
-            <KeywordScreen title="Матрица ключей">
+            <KeywordScreen title={t("ads.nav.keywordMatrix")}>
               {(k) => (
                 <KeywordMatrix
                   app={{ id: k.app.id, name: k.app.name, iTunesId: k.app.iTunesId, bundle: k.app.bundle, iconUrl: k.app.iconUrl }}
@@ -145,7 +147,7 @@ export default function App() {
             </KeywordScreen>
           } />
           <Route path="/traffic" element={
-            <KeywordScreen title="Трафик">
+            <KeywordScreen title={t("ads.nav.traffic")}>
               {(k) => (
                 <TrafficIntelligence
                   className="content"

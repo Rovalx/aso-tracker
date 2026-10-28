@@ -4,6 +4,7 @@ import '../../shared/ds.css';
 import '../../shared/ds-components.css';
 import './ds-bridge.css';
 import { App } from './App';
+import { I18nProvider } from '../../shared/i18n/I18n';
 
 // Theme follows the studio-wide choice (same key as the keywords app, shared
 // origin behind the :5173 proxy). Light is the default; ?theme=dark|light wins.
@@ -23,6 +24,6 @@ window.addEventListener('storage', (e) => {
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <App />
+    <I18nProvider><App /></I18nProvider>
   </StrictMode>,
 );

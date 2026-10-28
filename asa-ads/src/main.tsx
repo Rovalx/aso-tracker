@@ -12,15 +12,19 @@ import "./styles.css";
 import "./ds-bridge.css";
 // Adapty-style polish (no dividers, soft tables, compact headers) — must load last.
 import "./polish.css";
+import { I18nProvider } from "../../shared/i18n/I18n.tsx";
+import { adsMessages } from "./i18n.ts";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <BrowserRouter basename="/asa">
-      <AppProvider>
-        <CountryProvider>
-          <App />
-        </CountryProvider>
-      </AppProvider>
-    </BrowserRouter>
+    <I18nProvider messages={adsMessages}>
+      <BrowserRouter basename="/asa">
+        <AppProvider>
+          <CountryProvider>
+            <App />
+          </CountryProvider>
+        </AppProvider>
+      </BrowserRouter>
+    </I18nProvider>
   </StrictMode>,
 );

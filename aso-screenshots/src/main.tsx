@@ -14,6 +14,7 @@ import './styles/app.css';
 import './styles/highlight.css';
 import './styles/ds-bridge.css';
 import './styles/polish.css'; // Adapty-style chrome pass — keep last
+import { I18nProvider } from '../../shared/i18n/I18n';
 
 loadPresetFonts();
 
@@ -68,6 +69,6 @@ startStudioStateSync();
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <App />
+    <I18nProvider><App /></I18nProvider>
   </StrictMode>,
 );

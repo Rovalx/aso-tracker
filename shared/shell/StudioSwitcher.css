@@ -67,3 +67,4 @@
   font-size: 12px; line-height: 16px; font-weight: 400; color: var(--ds-muted); letter-spacing: 0;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
+.studio-sw-language { display: flex; justify-content: flex-end; padding: 6px 8px 2px; border-top: 1px solid var(--ds-border); margin-top: 4px; }

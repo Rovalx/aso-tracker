@@ -4,14 +4,16 @@
 // change both together.
 import { useEffect, useLayoutEffect, useRef, useState, type KeyboardEvent as ReactKeyboardEvent, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
+import { LanguageSwitcher, useI18n } from '../i18n/I18n';
 import './StudioSwitcher.css';
+import '../i18n/i18n.css';
 
 export type StudioProductId = 'keywords' | 'ads' | 'screenshots' | 'video' | 'inapp';
 
 interface StudioProduct {
   id: StudioProductId;
   name: string;
-  purpose: string;
+  purposeKey: string;
   href: string;
   icon: ReactNode;
 }
@@ -24,19 +26,20 @@ const svg = (children: ReactNode) => (
 );
 
 export const STUDIO_PRODUCTS: StudioProduct[] = [
-  { id: 'keywords', name: 'Keywords', purpose: 'Ключи и позиции в App Store', href: '/',
+  { id: 'keywords', name: 'Keywords', purposeKey: 'product.keywords.purpose', href: '/',
     icon: svg(<><circle cx="7" cy="7" r="4.25" /><path d="M10.2 10.2 13.5 13.5" /></>) },
-  { id: 'ads', name: 'Ads', purpose: 'Экономика Apple Search Ads', href: '/asa/',
+  { id: 'ads', name: 'Ads', purposeKey: 'product.ads.purpose', href: '/asa/',
     icon: svg(<path d="M3 13V9M8 13V3M13 13V6" />) },
-  { id: 'screenshots', name: 'Screenshots', purpose: 'Скриншоты для страницы App Store', href: '/studio/',
+  { id: 'screenshots', name: 'Screenshots', purposeKey: 'product.screenshots.purpose', href: '/studio/',
     icon: svg(<><rect x="4.5" y="2" width="7" height="12" rx="1.6" /><path d="M7 11.5h2" /></>) },
-  { id: 'video', name: 'Video', purpose: 'Производство рекламных видео', href: '/video/',
+  { id: 'video', name: 'Video', purposeKey: 'product.video.purpose', href: '/video/',
     icon: svg(<path d="M5 3.2v9.6L12.5 8z" />) },
-  { id: 'inapp', name: 'In-App', purpose: 'Карточки In-App Events', href: '/inapp/',
+  { id: 'inapp', name: 'In-App', purposeKey: 'product.inapp.purpose', href: '/inapp/',
     icon: svg(<path d="M8 2.5l1.6 3.4 3.7.4-2.8 2.5.8 3.7L8 10.6l-3.3 1.9.8-3.7-2.8-2.5 3.7-.4z" />) },
 ];
 
 export function StudioSwitcher({ current }: { current: StudioProductId }) {
+  const { t } = useI18n();
   const [open, setOpen] = useState(false);
   const [pos, setPos] = useState<{ top: number; left: number } | null>(null);
   const btnRef = useRef<HTMLButtonElement>(null);
@@ -98,7 +101,7 @@ export function StudioSwitcher({ current }: { current: StudioProductId }) {
         className={`studio-sw-btn${open ? ' is-open' : ''}`}
         aria-haspopup="menu"
         aria-expanded={open}
-        aria-label={`${active.name} Studio — переключить продукт`}
+        aria-label={`${active.name} Studio — ${t('switcher.changeProduct')}`}
         onClick={() => setOpen((v) => !v)}
         onKeyDown={onBtnKey}
       >
@@ -133,11 +136,12 @@ export function StudioSwitcher({ current }: { current: StudioProductId }) {
                 <span className={`studio-sw-icon studio-sw-icon--${p.id}`}>{p.icon}</span>
                 <span className="studio-sw-text">
                   <span className="studio-sw-name">{p.name}</span>
-                  <span className="studio-sw-cap">{p.purpose}</span>
+                  <span className="studio-sw-cap">{t(p.purposeKey)}</span>
                 </span>
               </a>
             );
           })}
+          <div className="studio-sw-language"><LanguageSwitcher compact /></div>
         </div>,
         document.body,
       )}

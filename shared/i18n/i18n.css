@@ -1,0 +1,26 @@
+.ui-language {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 2px;
+  border: 1px solid var(--ds-border);
+  border-radius: var(--ds-radius-control);
+  background: var(--ds-surface);
+}
+
+.ui-language button {
+  min-width: 34px;
+  height: 28px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: calc(var(--ds-radius-control) - 2px);
+  background: transparent;
+  color: var(--ds-muted);
+  font: 600 11px/1 var(--ds-font);
+  cursor: pointer;
+}
+
+.ui-language button:hover { color: var(--ds-text); background: var(--ds-hover); }
+.ui-language button.is-active { color: var(--ds-accent); background: var(--ds-accent-soft); }
+.ui-language button:focus-visible { outline: 2px solid var(--ds-accent); outline-offset: 1px; }
+.ui-language--compact button { min-width: 30px; height: 24px; padding: 0 6px; }
