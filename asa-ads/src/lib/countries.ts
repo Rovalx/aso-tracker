@@ -3,7 +3,7 @@
 /** "ALL" = every storefront (world). Anything else is an ISO alpha-2 code. */
 export const WORLD = "ALL";
 
-let ruNames: Intl.DisplayNames | null = null;
+const displayNames = new Map<string, Intl.DisplayNames>();
 
 /** Regional-indicator flag for an ISO-3166 alpha-2 code; 🌐 otherwise. */
 export function countryFlag(code: string): string {
@@ -13,19 +13,28 @@ export function countryFlag(code: string): string {
 }
 
 /** Russian storefront name ("BR" → "Бразилия"). */
-export function countryNameRu(code: string): string {
+export function countryName(code: string, language: string = "en"): string {
   const cc = code.trim().toUpperCase();
   try {
-    ruNames ??= new Intl.DisplayNames(["ru"], { type: "region" });
-    return ruNames.of(cc) ?? cc;
+    let names = displayNames.get(language);
+    if (!names) {
+      names = new Intl.DisplayNames([language], { type: "region" });
+      displayNames.set(language, names);
+    }
+    return names.of(cc) ?? cc;
   } catch {
     return cc;
   }
 }
 
+/** @deprecated Prefer countryName(code, currentInterfaceLanguage). */
+export function countryNameRu(code: string): string {
+  return countryName(code, "ru");
+}
+
 /** Header scope label: «🌍 Весь мир» or «🇧🇷 Бразилия». */
-export function scopeLabel(country: string): string {
-  return country === WORLD ? "🌍 Весь мир" : `${countryFlag(country)} ${countryNameRu(country)}`;
+export function scopeLabel(country: string, language: string = "en", worldLabel: string = "Worldwide"): string {
+  return country === WORLD ? `🌍 ${worldLabel}` : `${countryFlag(country)} ${countryName(country, language)}`;
 }
 
 /** Normalizes a raw value (URL, storage) to "ALL" or an alpha-2 code. */

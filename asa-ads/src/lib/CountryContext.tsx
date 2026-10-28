@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { api, type AppCountry } from "../api.ts";
 import { useApp } from "./AppContext.tsx";
 import { WORLD, normalizeCountry, scopeLabel } from "./countries.ts";
+import { useI18n } from "../../../shared/i18n/I18n.tsx";
 
 // One storefront filter for the whole Ads product. The value lives here, is
 // mirrored into `?country=XX` (shareable, survives reloads) and localStorage
@@ -31,6 +32,7 @@ function initialCountry(): string {
 }
 
 export function CountryProvider({ children }: { children: ReactNode }) {
+  const { language, t } = useI18n();
   const { selected } = useApp();
   const location = useLocation();
   const navigate = useNavigate();
@@ -79,7 +81,7 @@ export function CountryProvider({ children }: { children: ReactNode }) {
       isWorld: country === WORLD,
       setCountry,
       options: options?.key === appKey ? options.rows : [],
-      label: scopeLabel(country),
+      label: scopeLabel(country, language, t("country.world")),
       reload,
     }}>
       {children}
