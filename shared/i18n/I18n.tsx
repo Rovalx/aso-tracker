@@ -8,7 +8,7 @@ import {
   type ReactNode,
 } from 'react';
 
-export type UiLanguage = 'en' | 'pl';
+export type UiLanguage = 'en' | 'pl' | 'ru';
 export type Messages = Record<string, string>;
 
 const STORAGE_KEY = 'aso-studio.language';
@@ -17,6 +17,7 @@ const sharedMessages: Record<UiLanguage, Messages> = {
   en: {
     'language.english': 'English',
     'language.polish': 'Polski',
+    'language.russian': 'Русский',
     'language.label': 'Interface language',
     'switcher.changeProduct': 'switch product',
     'product.keywords.purpose': 'Keywords and App Store rankings',
@@ -28,6 +29,7 @@ const sharedMessages: Record<UiLanguage, Messages> = {
   pl: {
     'language.english': 'English',
     'language.polish': 'Polski',
+    'language.russian': 'Русский',
     'language.label': 'Język interfejsu',
     'switcher.changeProduct': 'zmień produkt',
     'product.keywords.purpose': 'Słowa kluczowe i pozycje w App Store',
@@ -36,12 +38,24 @@ const sharedMessages: Record<UiLanguage, Messages> = {
     'product.video.purpose': 'Produkcja reklam wideo',
     'product.inapp.purpose': 'Karty wydarzeń In-App',
   },
+  ru: {
+    'language.english': 'English',
+    'language.polish': 'Polski',
+    'language.russian': 'Русский',
+    'language.label': 'Язык интерфейса',
+    'switcher.changeProduct': 'сменить продукт',
+    'product.keywords.purpose': 'Ключевые слова и позиции в App Store',
+    'product.ads.purpose': 'Эффективность Apple Ads',
+    'product.screenshots.purpose': 'Скриншоты для App Store',
+    'product.video.purpose': 'Создание видеорекламы',
+    'product.inapp.purpose': 'Карточки событий In-App',
+  },
 };
 
 function initialLanguage(): UiLanguage {
   try {
     const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved === 'en' || saved === 'pl') return saved;
+    if (saved === 'en' || saved === 'pl' || saved === 'ru') return saved;
   } catch { /* storage may be unavailable */ }
   return 'en';
 }
@@ -66,7 +80,7 @@ export function I18nProvider({ children, messages }: { children: ReactNode; mess
   useEffect(() => {
     document.documentElement.lang = language;
     const onStorage = (event: StorageEvent) => {
-      if (event.key === STORAGE_KEY && (event.newValue === 'en' || event.newValue === 'pl')) {
+      if (event.key === STORAGE_KEY && (event.newValue === 'en' || event.newValue === 'pl' || event.newValue === 'ru')) {
         setLanguageState(event.newValue);
       }
     };
@@ -77,6 +91,7 @@ export function I18nProvider({ children, messages }: { children: ReactNode; mess
   const merged = useMemo(() => ({
     en: { ...sharedMessages.en, ...messages?.en },
     pl: { ...sharedMessages.pl, ...messages?.pl },
+    ru: { ...sharedMessages.ru, ...messages?.ru },
   }), [messages]);
 
   const t = useCallback((key: string, values?: Record<string, string | number>) => {
@@ -101,14 +116,14 @@ export function LanguageSwitcher({ compact = false }: { compact?: boolean }) {
   const { language, setLanguage, t } = useI18n();
   return (
     <div className={`ui-language${compact ? ' ui-language--compact' : ''}`} aria-label={t('language.label')}>
-      {(['en', 'pl'] as const).map((code) => (
+      {(['en', 'pl', 'ru'] as const).map((code) => (
         <button
           key={code}
           type="button"
           className={language === code ? 'is-active' : ''}
           aria-pressed={language === code}
           onClick={() => setLanguage(code)}
-          title={t(code === 'en' ? 'language.english' : 'language.polish')}
+          title={t(code === 'en' ? 'language.english' : code === 'pl' ? 'language.polish' : 'language.russian')}
         >
           {code.toUpperCase()}
         </button>
