@@ -44,6 +44,7 @@ import {
 } from './countries';
 import { HBars, Legend, SERIES, Sparkline as ChartSparkline, type TipRow } from '../../shared/charts/Charts';
 import { StudioSwitcher } from '../../shared/shell/StudioSwitcher';
+import { useI18n } from '../../shared/i18n/I18n';
 
 type TopFiveCandidate = { id: string; tid?: number };
 
@@ -161,6 +162,7 @@ function AppIcon({ app, size = 42 }: { app: AppStats; size?: number }) {
 }
 
 export default function App() {
+  const { t, language } = useI18n();
   const [apps, setApps] = useState<AppStats[]>([]);
   const [selectedAppID, setSelectedAppID] = useState('');
   const [keywordMap, setKeywordMap] = useState<Record<string, string[]>>({});
@@ -989,8 +991,8 @@ export default function App() {
         <div className="empty-card">
           <div className="brand-mark">K</div>
           <h1>Keywords</h1>
-          <p>Добавьте приложение из App Store, чтобы отслеживать позиции по ключевым словам.</p>
-          <button className="ds-btn ds-btn-primary" onClick={openAppDialog}>Добавить первое приложение</button>
+          <p>{t('kw.empty')}</p>
+          <button className="ds-btn ds-btn-primary" onClick={openAppDialog}>{t('kw.addFirst')}</button>
           {dialog && <InputDialog dialog={dialog} busy={dialogBusy} existingLocales={Object.keys(keywordMap)} onClose={() => setDialog(null)} onSubmit={submitDialog} />}
         </div>
       </main>
@@ -1004,41 +1006,41 @@ export default function App() {
           <StudioSwitcher current="keywords" />
         </div>
 
-        <nav className="utility-nav" aria-label="Рабочая область">
+        <nav className="utility-nav" aria-label={t('kw.workspace')}>
           <button className={view === 'overview' ? 'selected' : ''} onClick={() => { markNavigation(); setView('overview'); setMobileNavOpen(false); }}>
-            <span className="nav-label">Обзор</span>
+            <span className="nav-label">{t('kw.overview')}</span>
           </button>
           <button className={view === 'keywords' ? 'selected' : ''} onClick={() => openKeywordView(view === 'keywords' ? keywordView : 'matrix')}>
-            <span className="nav-label">Ключевые слова</span>
+            <span className="nav-label">{t('kw.keywords')}</span>
           </button>
           <button className={view === 'competitors' ? 'selected' : ''} onClick={() => { markNavigation(); setView('competitors'); setMobileNavOpen(false); }} disabled={!selectedApp}>
-            <span className="nav-label">Конкуренты</span>
+            <span className="nav-label">{t('kw.competitors')}</span>
           </button>
           <button className={view === 'funnel' ? 'selected' : ''} onClick={() => { markNavigation(); setView('funnel'); setMobileNavOpen(false); }} disabled={!selectedApp || !locale}>
-            <span className="nav-label">Воронка</span>
+            <span className="nav-label">{t('kw.funnel')}</span>
           </button>
           <button className={view === 'experiments' ? 'selected' : ''} onClick={() => { markNavigation(); setView('experiments'); setMobileNavOpen(false); }} disabled={!selectedApp}>
-            <span className="nav-label">Эксперименты</span>
+            <span className="nav-label">{t('kw.experiments')}</span>
           </button>
         </nav>
 
         <div className="rail-spacer" />
         <a className="rail-link" href="/asa/">Ads</a>
         <button className="theme-toggle" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>
-          {theme === 'dark' ? 'Светлая тема' : 'Тёмная тема'}
+          {theme === 'dark' ? t('kw.light') : t('kw.dark')}
         </button>
       </aside>
 
-      {mobileNavOpen && <button className="mobile-nav-scrim" onClick={() => setMobileNavOpen(false)} aria-label="Закрыть навигацию" />}
+      {mobileNavOpen && <button className="mobile-nav-scrim" onClick={() => setMobileNavOpen(false)} aria-label={t('kw.closeNav')} />}
 
       <div className="main-shell">
         <header className="context-bar">
-          <button className="mobile-nav-toggle" onClick={() => setMobileNavOpen(true)} aria-label="Открыть навигацию">Меню</button>
+          <button className="mobile-nav-toggle" onClick={() => setMobileNavOpen(true)} aria-label={t('kw.openNav')}>{t('kw.menu')}</button>
           {selectedApp && (
             <Picker
               className="app-picker"
-              label="Приложение"
-              searchPlaceholder="Найти приложение"
+              label={t('kw.app')}
+              searchPlaceholder={t('kw.findApp')}
               value={selectedApp.id}
               onChange={(id) => { markNavigation(); setSelectedAppID(id); }}
               options={apps.map((app) => ({ value: app.id, label: app.name, lead: <AppIcon app={app} size={20} /> }))}
@@ -1052,11 +1054,11 @@ export default function App() {
                 onClick={() => setPaletteOpen(true)}
                 aria-haspopup="dialog"
                 aria-label={isMatrix ? `Витрина: все страны, набор ${activeMatrixSet?.name ?? ''}` : `Витрина: ${storefrontOf(locale).name}`}
-                title="Выбрать витрину (⌘K)"
+                title={t('kw.chooseStore')}
               >
                 {isMatrix ? <>
                   <Icon name="globe" className="sf-globe" />
-                  <span className="sf-label">Все страны</span>
+                  <span className="sf-label">{t('kw.allCountries')}</span>
                   <span className="sf-code">{activeMatrixSet ? (activeMatrixSet.id === 'all' ? `${activeMatrixSet.locales.length}` : `${activeMatrixSet.name} · ${activeMatrixSet.locales.length}`) : ''}</span>
                 </> : <>
                   <span className="sf-flag" aria-hidden="true">{storefrontOf(locale).flag}</span>
@@ -1066,8 +1068,8 @@ export default function App() {
                 <kbd>⌘K</kbd>
               </button>
               {!isMatrix && trackedStorefronts.length > 1 && <>
-                <button type="button" className="ds-icon-btn" onClick={() => stepStorefront(-1)} aria-label="Предыдущая витрина" title="Предыдущая витрина (⌘[)"><Icon name="chevronLeft" /></button>
-                <button type="button" className="ds-icon-btn" onClick={() => stepStorefront(1)} aria-label="Следующая витрина" title="Следующая витрина (⌘])"><Icon name="chevronRight" /></button>
+                <button type="button" className="ds-icon-btn" onClick={() => stepStorefront(-1)} aria-label={t('kw.prevStore')} title={`${t('kw.prevStore')} (⌘[)`}><Icon name="chevronLeft" /></button>
+                <button type="button" className="ds-icon-btn" onClick={() => stepStorefront(1)} aria-label={t('kw.nextStore')} title={`${t('kw.nextStore')} (⌘])`}><Icon name="chevronRight" /></button>
               </>}
             </span>
           )}
@@ -1075,7 +1077,7 @@ export default function App() {
             {freshnessLabel(selectedApp?.lastSnapshot)}
           </span>
           <span className="context-spacer" />
-          <button className="ds-btn" onClick={openAppDialog}><Icon name="plus" /> Добавить приложение</button>
+          <button className="ds-btn" onClick={openAppDialog}><Icon name="plus" /> {t('kw.addApp')}</button>
         </header>
         <UpdateProgressBar
           running={refreshing}
@@ -1099,20 +1101,20 @@ export default function App() {
       <section className={`content ${compactHeader ? 'is-compact' : ''}`} ref={contentRef}>
         <header className="view-header">
           <div className="page-title-row">
-            <h1 className="ds-page-title">Ключевые слова</h1>
-            <div className="ds-seg page-tabs" role="tablist" aria-label="Раздел ключевых слов">
-              {KEYWORD_TABS.map(([id, label, hint]) => (
-                <button key={id} role="tab" aria-selected={keywordView === id} title={hint}
+            <h1 className="ds-page-title">{t('kw.keywords')}</h1>
+            <div className="ds-seg page-tabs" role="tablist" aria-label={t('kw.section')}>
+              {KEYWORD_TABS.map(([id]) => (
+                <button key={id} role="tab" aria-selected={keywordView === id} title={t(`kw.${id}Hint`)}
                   disabled={id !== 'positions' && (!selectedApp || (id === 'ideas' && !locale))}
-                  onClick={() => openKeywordView(id)}>{label}</button>
+                  onClick={() => openKeywordView(id)}>{t(`kw.${id}`)}</button>
               ))}
             </div>
             {keywordView === 'positions' ? <>
               <label className="search-field">
                 <Icon name="search" />
-                <input id="kw-search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Поиск ключевых слов (⌘F)" />
+                <input id="kw-search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder={t('kw.search')} />
               </label>
-              <button className="ds-btn ds-btn-primary" onClick={openKeywordsDialog}><Icon name="plus" /> Ключевые слова</button>
+              <button className="ds-btn ds-btn-primary" onClick={openKeywordsDialog}><Icon name="plus" /> {t('kw.keywords')}</button>
             </> : null}
           </div>
         </header>
@@ -1136,11 +1138,11 @@ export default function App() {
             />
           ) : null
         ) : keywordView === 'positions' ? <>
-        <section className="kw-stats" aria-label="Сводка позиций">
-          <span><b>{positionSummary.total}</b> {pluralKeys(positionSummary.total)}</span>
-          <span>в выдаче <b>{positionSummary.ranked}</b></span>
-          <span>в топ-10 <b>{positionSummary.top10}</b>{positionSummary.improved ? <em className="kw-stats-up">↑{positionSummary.improved} за сутки</em> : null}</span>
-          <span>средняя <b>{positionSummary.average == null ? '—' : `#${positionSummary.average.toLocaleString('ru-RU', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}`}</b></span>
+        <section className="kw-stats" aria-label={t('kw.summary')}>
+          <span><b>{positionSummary.total}</b> {language === 'ru' ? pluralKeys(positionSummary.total) : t('kw.keywords').toLocaleLowerCase()}</span>
+          <span>{t('kw.ranked')} <b>{positionSummary.ranked}</b></span>
+          <span>{t('kw.top10')} <b>{positionSummary.top10}</b>{positionSummary.improved ? <em className="kw-stats-up">↑{positionSummary.improved} {t('kw.day')}</em> : null}</span>
+          <span>{t('kw.average')} <b>{positionSummary.average == null ? '—' : `#${positionSummary.average.toLocaleString(language === 'pl' ? 'pl-PL' : language === 'ru' ? 'ru-RU' : 'en-GB', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}`}</b></span>
         </section>
         {selectedApp && (
           <PositionsTable
