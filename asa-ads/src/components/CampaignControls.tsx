@@ -1,6 +1,7 @@
 import { useState } from "react";
 import type { Campaign } from "../api.ts";
 import { api } from "../api.ts";
+import { useI18n } from "../../../shared/i18n/I18n.tsx";
 
 interface Props {
   campaign: Campaign;
@@ -8,6 +9,7 @@ interface Props {
 }
 
 export default function CampaignControls({ campaign, onChange }: Props) {
+  const { t } = useI18n();
   const [busy, setBusy] = useState(false);
   const [editing, setEditing] = useState(false);
   const [bud, setBud] = useState(String(campaign.daily_budget));
@@ -22,7 +24,7 @@ export default function CampaignControls({ campaign, onChange }: Props) {
         campaign_id: campaign.id,
       });
       const r = await api.applyAction(id);
-      if (!r.ok) alert(`Не удалось применить действие: ${r.error}`);
+      if (!r.ok) alert(t("action.applyError", { error: r.error ?? "unknown" }));
       onChange?.();
     } finally {
       setBusy(false);
@@ -31,7 +33,7 @@ export default function CampaignControls({ campaign, onChange }: Props) {
 
   async function saveBudget(): Promise<void> {
     const n = Number(bud);
-    if (!Number.isFinite(n) || n <= 0) { alert("Укажите положительную сумму"); return; }
+    if (!Number.isFinite(n) || n <= 0) { alert(t("campaignControls.positiveAmount")); return; }
     if (Math.abs(n - campaign.daily_budget) < 0.005) { setEditing(false); return; }
     setBusy(true);
     try {
@@ -41,7 +43,7 @@ export default function CampaignControls({ campaign, onChange }: Props) {
         amount: n.toFixed(2),
       });
       const r = await api.applyAction(id);
-      if (!r.ok) alert(`Не удалось применить действие: ${r.error}`);
+      if (!r.ok) alert(t("action.applyError", { error: r.error ?? "unknown" }));
       setEditing(false);
       onChange?.();
     } finally {
@@ -63,19 +65,19 @@ export default function CampaignControls({ campaign, onChange }: Props) {
             autoFocus
             onKeyDown={(e) => { if (e.key === "Enter") void saveBudget(); if (e.key === "Escape") setEditing(false); }}
           />
-          <button className="compact primary" disabled={busy} onClick={saveBudget}>Сохранить</button>
+          <button className="compact primary" disabled={busy} onClick={saveBudget}>{t("common.save")}</button>
           <button className="compact" onClick={() => setEditing(false)}>×</button>
         </>
       ) : (
-        <button className="compact" onClick={() => setEditing(true)} title="Изменить дневной лимит">
-          Лимит ${Number.isInteger(campaign.daily_budget) ? campaign.daily_budget.toFixed(0) : campaign.daily_budget.toFixed(2)}
+        <button className="compact" onClick={() => setEditing(true)} title={t("campaignControls.editLimit")}>
+          {t("campaignControls.limit", { amount: Number.isInteger(campaign.daily_budget) ? campaign.daily_budget.toFixed(0) : campaign.daily_budget.toFixed(2) })}
         </button>
       )}
       <button
         className={`compact ${campaign.status === "ENABLED" ? "down" : "up"}`}
         disabled={busy}
         onClick={togglePause}
-        title={campaign.status === "ENABLED" ? "Поставить кампанию на паузу" : "Возобновить кампанию"}
+        title={campaign.status === "ENABLED" ? t("campaignControls.pause") : t("campaignControls.resume")}
       >
         {campaign.status === "ENABLED" ? "❚❚" : "▶"}
       </button>
