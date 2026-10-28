@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState, type ReactNode } from 'react';
 import { asaApiUrl } from '../api.ts';
 import './ConnectGate.css';
+import { useI18n } from '../../../shared/i18n/I18n.tsx';
 
 // «Подключить» gate: a screen that needs keys renders only when the studio server says
 // every required integration is connected. Otherwise the screen is locked with a
@@ -20,6 +21,7 @@ const load = (force = false) => {
 const forced = () => new Set((new URLSearchParams(location.search).get('gate') ?? '').split(',').filter(Boolean));
 
 export default function ConnectGate({ requires, title, children }: { requires: IntegrationId[]; title: string; children: ReactNode }) {
+  const { t } = useI18n();
   const [list, setList] = useState<Integration[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
@@ -27,7 +29,7 @@ export default function ConnectGate({ requires, title, children }: { requires: I
   useEffect(() => { refresh(); }, [refresh]);
 
   if (error) return <>{children}</>; // the server is down: let the screen show its own error
-  if (!list) return <div className="gate-loading">Проверяем подключения…</div>;
+  if (!list) return <div className="gate-loading">{t('gate.checking')}</div>;
   const f = forced();
   const need = list.filter((i) => requires.includes(i.id) && (!i.connected || f.has(i.id)));
   if (!need.length) return <>{children}</>;
@@ -36,10 +38,10 @@ export default function ConnectGate({ requires, title, children }: { requires: I
     <section className="gate">
       <div className="gate-card">
         <div className="gate-lock" aria-hidden>🔒</div>
-        <h2>{title} ждёт подключения</h2>
-        <p>Нужно подключить: {need.map((i) => i.name).join(', ')}. Без этих ключей экран покажет пустые или неверные данные.</p>
+        <h2>{t('gate.waiting', { title })}</h2>
+        <p>{t('gate.required', { names: need.map((i) => i.name).join(', ') })}</p>
         <ul className="gate-why">{need.map((i) => <li key={i.id}><b>{i.name}</b> — {i.purpose}</li>)}</ul>
-        {!open && <button className="gate-primary" onClick={() => setOpen(true)}>Подключить</button>}
+        {!open && <button className="gate-primary" onClick={() => setOpen(true)}>{t('gate.connect')}</button>}
         {open && need.map((i) => <Connect key={i.id} item={i} onSaved={() => refresh(true)} />)}
       </div>
     </section>
@@ -47,6 +49,7 @@ export default function ConnectGate({ requires, title, children }: { requires: I
 }
 
 function Connect({ item, onSaved }: { item: Integration; onSaved: () => void }) {
+  const { t } = useI18n();
   const [tab, setTab] = useState<'form' | 'agent'>('form');
   const [values, setValues] = useState<Record<string, string>>({});
   const [state, setState] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
@@ -63,16 +66,16 @@ function Connect({ item, onSaved }: { item: Integration; onSaved: () => void }) 
       <div className="gate-connect-head">
         <b>{item.name}</b>
         <div className="gate-tabs">
-          <button className={tab === 'form' ? 'on' : ''} onClick={() => setTab('form')}>Вставить ключи</button>
-          <button className={tab === 'agent' ? 'on' : ''} onClick={() => setTab('agent')}>Инструкция для агента</button>
+          <button className={tab === 'form' ? 'on' : ''} onClick={() => setTab('form')}>{t('gate.pasteKeys')}</button>
+          <button className={tab === 'agent' ? 'on' : ''} onClick={() => setTab('agent')}>{t('gate.agentInstructions')}</button>
         </div>
       </div>
-      <p className="gate-where">Где взять: {item.where}</p>
+      <p className="gate-where">{t('gate.where')}: {item.where}</p>
       {tab === 'form' ? (
         <div className="gate-form">
           {item.fields.map((f) => (
             <label key={f.key}>
-              <span>{f.label}{f.present && <em>сохранён · {f.preview}</em>}</span>
+              <span>{f.label}{f.present && <em>{t('gate.savedShort')} · {f.preview}</em>}</span>
               {f.multiline
                 ? <textarea rows={4} placeholder={f.hint} value={values[f.key] ?? ''} onChange={(e) => setValues({ ...values, [f.key]: e.target.value })} />
                 : <input type={f.secret ? 'password' : 'text'} placeholder={f.hint} autoComplete="off" value={values[f.key] ?? ''} onChange={(e) => setValues({ ...values, [f.key]: e.target.value })} />}
@@ -80,18 +83,18 @@ function Connect({ item, onSaved }: { item: Integration; onSaved: () => void }) 
           ))}
           <div className="gate-actions">
             <button className="gate-primary" disabled={state === 'saving' || !Object.values(values).some((v) => v.trim())} onClick={save}>
-              {state === 'saving' ? 'Сохраняем…' : 'Сохранить'}
+              {state === 'saving' ? t('gate.saving') : t('gate.save')}
             </button>
-            {state === 'saved' && <span className="gate-ok">Сохранено. Если экран не открылся — перезапустите студию.</span>}
-            {state === 'error' && <span className="gate-err">Сервер не принял ключи.</span>}
+            {state === 'saved' && <span className="gate-ok">{t('gate.saved')}</span>}
+            {state === 'error' && <span className="gate-err">{t('gate.error')}</span>}
           </div>
-          <p className="gate-note">Ключи хранятся только в локальной базе студии и не показываются целиком.</p>
+          <p className="gate-note">{t('gate.note')}</p>
         </div>
       ) : (
         <div className="gate-agent">
           <pre>{item.agentPrompt}</pre>
           <button onClick={() => { void navigator.clipboard.writeText(item.agentPrompt); setCopied(true); setTimeout(() => setCopied(false), 1500); }}>
-            {copied ? 'Скопировано' : 'Скопировать для агента'}
+            {copied ? t('gate.copied') : t('gate.copyForAgent')}
           </button>
         </div>
       )}
