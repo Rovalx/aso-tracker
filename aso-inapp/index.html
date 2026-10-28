@@ -304,38 +304,39 @@
 <header>
   <!-- synced from shared/shell/StudioSwitcher -->
   <div class="studio-sw">
-    <button type="button" id="swBtn" class="studio-sw-btn" aria-haspopup="menu" aria-expanded="false" aria-label="In-App Studio — переключить продукт">
+    <button type="button" id="swBtn" class="studio-sw-btn" aria-haspopup="menu" aria-expanded="false" data-i18n-aria="switchProduct" aria-label="In-App Studio — switch product">
       <span class="studio-sw-icon studio-sw-icon--inapp"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2.5l1.6 3.4 3.7.4-2.8 2.5.8 3.7L8 10.6l-3.3 1.9.8-3.7-2.8-2.5 3.7-.4z"/></svg></span>
       <span class="studio-sw-text"><span class="studio-sw-name">In-App</span><span class="studio-sw-cap">Studio</span></span>
       <svg class="studio-sw-chev" width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4.5 6 7.5 9 4.5"/></svg>
     </button>
     <div class="ds-pop studio-sw-pop" id="swMenu" role="menu">
-      <a href="/" role="menuitem" class="studio-sw-row"><span class="studio-sw-icon studio-sw-icon--keywords"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="7" cy="7" r="4.25"/><path d="M10.2 10.2 13.5 13.5"/></svg></span><span class="studio-sw-text"><span class="studio-sw-name">Keywords</span><span class="studio-sw-cap">Ключи и позиции в App Store</span></span></a>
-      <a href="/asa/" role="menuitem" class="studio-sw-row"><span class="studio-sw-icon studio-sw-icon--ads"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 13V9M8 13V3M13 13V6"/></svg></span><span class="studio-sw-text"><span class="studio-sw-name">Ads</span><span class="studio-sw-cap">Экономика Apple Search Ads</span></span></a>
-      <a href="/studio/" role="menuitem" class="studio-sw-row"><span class="studio-sw-icon studio-sw-icon--screenshots"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4.5" y="2" width="7" height="12" rx="1.6"/><path d="M7 11.5h2"/></svg></span><span class="studio-sw-text"><span class="studio-sw-name">Screenshots</span><span class="studio-sw-cap">Скриншоты для страницы App Store</span></span></a>
-      <a href="/video/" role="menuitem" class="studio-sw-row"><span class="studio-sw-icon studio-sw-icon--video"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3.2v9.6L12.5 8z"/></svg></span><span class="studio-sw-text"><span class="studio-sw-name">Video</span><span class="studio-sw-cap">Производство рекламных видео</span></span></a>
-      <a href="/inapp/" role="menuitem" class="studio-sw-row on" aria-current="page"><span class="studio-sw-icon studio-sw-icon--inapp"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2.5l1.6 3.4 3.7.4-2.8 2.5.8 3.7L8 10.6l-3.3 1.9.8-3.7-2.8-2.5 3.7-.4z"/></svg></span><span class="studio-sw-text"><span class="studio-sw-name">In-App</span><span class="studio-sw-cap">Карточки In-App Events</span></span></a>
+      <a href="/" role="menuitem" class="studio-sw-row"><span class="studio-sw-icon studio-sw-icon--keywords"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="7" cy="7" r="4.25"/><path d="M10.2 10.2 13.5 13.5"/></svg></span><span class="studio-sw-text"><span class="studio-sw-name">Keywords</span><span class="studio-sw-cap" data-i18n="keywordsPurpose">Keywords and App Store rankings</span></span></a>
+      <a href="/asa/" role="menuitem" class="studio-sw-row"><span class="studio-sw-icon studio-sw-icon--ads"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 13V9M8 13V3M13 13V6"/></svg></span><span class="studio-sw-text"><span class="studio-sw-name">Ads</span><span class="studio-sw-cap" data-i18n="adsPurpose">Apple Ads performance</span></span></a>
+      <a href="/studio/" role="menuitem" class="studio-sw-row"><span class="studio-sw-icon studio-sw-icon--screenshots"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4.5" y="2" width="7" height="12" rx="1.6"/><path d="M7 11.5h2"/></svg></span><span class="studio-sw-text"><span class="studio-sw-name">Screenshots</span><span class="studio-sw-cap" data-i18n="screenshotsPurpose">App Store screenshots</span></span></a>
+      <a href="/video/" role="menuitem" class="studio-sw-row"><span class="studio-sw-icon studio-sw-icon--video"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3.2v9.6L12.5 8z"/></svg></span><span class="studio-sw-text"><span class="studio-sw-name">Video</span><span class="studio-sw-cap" data-i18n="videoPurpose">Video ad production</span></span></a>
+      <a href="/inapp/" role="menuitem" class="studio-sw-row on" aria-current="page"><span class="studio-sw-icon studio-sw-icon--inapp"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2.5l1.6 3.4 3.7.4-2.8 2.5.8 3.7L8 10.6l-3.3 1.9.8-3.7-2.8-2.5 3.7-.4z"/></svg></span><span class="studio-sw-text"><span class="studio-sw-name">In-App</span><span class="studio-sw-cap" data-i18n="inappPurpose">In-App Event cards</span></span></a>
     </div>
   </div>
   <div class="spacer"></div>
-  <div class="ctrl">App ID <input type="text" class="ds-input" id="appId" value="6771391236" /></div>
-  <div class="ctrl">Locale <select class="ds-select" id="locale"></select></div>
-  <button class="ds-btn theme-btn" id="themeBtn" title="Toggle dark theme">◐</button>
+  <div class="ctrl"><span data-i18n="appId">App ID</span> <input type="text" class="ds-input" id="appId" value="6771391236" /></div>
+  <div class="ctrl"><span data-i18n="locale">Locale</span> <select class="ds-select" id="locale"></select></div>
+  <div class="ds-seg" id="uiLanguage" aria-label="Interface language"><button data-lang="en">EN</button><button data-lang="pl">PL</button><button data-lang="ru">RU</button></div>
+  <button class="ds-btn theme-btn" id="themeBtn" data-i18n-title="toggleTheme" title="Toggle dark theme">◐</button>
 </header>
 
 <div class="page-head">
   <div>
-    <h1 class="ds-page-title">In-App Events</h1>
-    <p class="ds-page-sub">Card 16:9 + detail 9:16 · indexed: name 30 · short 50 · long 120 (not indexed)</p>
+    <h1 class="ds-page-title" data-i18n="title">In-App Events</h1>
+    <p class="ds-page-sub" data-i18n="subtitle">Card 16:9 + detail 9:16 · indexed: name 30 · short 50 · long 120 (not indexed)</p>
   </div>
   <div class="ds-seg" id="eventTabs" role="tablist"></div>
 </div>
 
 <main>
   <div class="stage">
-    <h2 class="ds-card-title">Event card · 16:9</h2>
+    <h2 class="ds-card-title" data-i18n="eventCard">Event card · 16:9</h2>
     <div class="card" id="card">
-      <div class="media-wrap" id="cardMedia"><div class="placeholder">drop a 16:9 image / .mp4 loop in the editor →</div></div>
+      <div class="media-wrap" id="cardMedia"><div class="placeholder" data-i18n="dropHint">drop a 16:9 image / .mp4 loop in the editor →</div></div>
       <div class="scrim"></div>
       <div class="badge" id="cardBadge"></div>
       <div class="info">
@@ -347,11 +348,11 @@
         </div>
       </div>
     </div>
-    <div class="ds-note">Apple auto-applies the bottom gradient + overlays this text — keep the lower third of the art clean, no baked-in text/logos/borders.</div>
+    <div class="ds-note" data-i18n="appleGradient">Apple auto-applies the bottom gradient + overlays this text — keep the lower third of the art clean, no baked-in text/logos/borders.</div>
   </div>
 
   <div class="stage">
-    <h2 class="ds-card-title">Detail page · 9:16</h2>
+    <h2 class="ds-card-title" data-i18n="detailPage">Detail page · 9:16</h2>
     <div class="detail">
       <div class="hero">
         <div class="media-wrap" id="detailMedia"><div class="placeholder">media</div></div>
@@ -363,7 +364,7 @@
         <div class="approw">
           <div class="icon" id="detailIcon"></div>
           <div class="nm" id="detailAppName">Elara<small>Pregnancy &amp; Baby Tracker</small></div>
-          <button class="get">GET</button>
+          <button class="get" data-i18n="get">GET</button>
         </div>
         <p class="ev-long" id="detailLong"></p>
         <p class="dates" id="detailDates"></p>
@@ -377,31 +378,51 @@
       <p class="ref ds-note" id="edRefName"></p>
     </div>
     <div class="field">
-      <label>Name <span class="ds-badge ds-badge-good">indexed</span> <span class="count" id="cName"></span></label>
+      <label><span data-i18n="name">Name</span> <span class="ds-badge ds-badge-good" data-i18n="indexed">indexed</span> <span class="count" id="cName"></span></label>
       <textarea class="ds-textarea" id="fName" rows="1"></textarea>
-      <div class="ds-note">Title Case, reads as a real event. Keyword slot #1.</div>
+      <div class="ds-note" data-i18n="nameHint">Title Case, reads as a real event. Keyword slot #1.</div>
     </div>
     <div class="field">
-      <label>Short description <span class="ds-badge ds-badge-good">indexed</span> <span class="count" id="cShort"></span></label>
+      <label><span data-i18n="shortDescription">Short description</span> <span class="ds-badge ds-badge-good" data-i18n="indexed">indexed</span> <span class="count" id="cShort"></span></label>
       <textarea class="ds-textarea" id="fShort" rows="2"></textarea>
-      <div class="ds-note">Shown on the card (1 line). Keyword slot #2 — different terms than the name.</div>
+      <div class="ds-note" data-i18n="shortHint">Shown on the card (1 line). Keyword slot #2 — different terms than the name.</div>
     </div>
     <div class="field">
-      <label>Long description <span class="count" id="cLong"></span></label>
+      <label><span data-i18n="longDescription">Long description</span> <span class="count" id="cLong"></span></label>
       <textarea class="ds-textarea" id="fLong" rows="4"></textarea>
-      <div class="ds-note">Detail page only · NOT indexed → pure hook/sell.</div>
+      <div class="ds-note" data-i18n="longHint">Detail page only · NOT indexed → pure hook/sell.</div>
     </div>
     <div class="field">
-      <label>Card media (image / mp4)</label>
-      <div class="drop" id="drop">Drop a 16:9 image or .mp4 loop<small>or click to choose</small>
+      <label data-i18n="cardMedia">Card media (image / mp4)</label>
+      <div class="drop" id="drop"><span data-i18n="dropMedia">Drop a 16:9 image or .mp4 loop</span><small data-i18n="clickChoose">or click to choose</small>
         <input type="file" id="file" accept="image/*,video/mp4" hidden>
       </div>
     </div>
-    <p class="foot ds-note">Live preview only (not saved to ASC). Lock copy + composition here, then localize natively to 49 and upload media in ASC. Media spec: 16:9, 1920×1080+, video ≤30s seamless loop, no text/logo/border/gradient.</p>
+    <p class="foot ds-note" data-i18n="footer">Live preview only (not saved to ASC). Lock copy + composition here, then localize natively to 49 and upload media in ASC. Media spec: 16:9, 1920×1080+, video ≤30s seamless loop, no text/logo/border/gradient.</p>
   </div>
 </main>
 
 <script>
+const UI_LANG_KEY="aso-studio.language";
+const UI={
+ en:{switchProduct:"In-App Studio — switch product",keywordsPurpose:"Keywords and App Store rankings",locale:"Locale",toggleTheme:"Toggle dark theme",title:"In-App Events",subtitle:"Card 16:9 + detail 9:16 · indexed: name 30 · short 50 · long 120 (not indexed)",eventCard:"Event card · 16:9",dropHint:"drop a 16:9 image / .mp4 loop in the editor →",appleGradient:"Apple auto-applies the bottom gradient + overlays this text — keep the lower third of the art clean, no baked-in text/logos/borders.",detailPage:"Detail page · 9:16",get:"GET",name:"Name",indexed:"indexed",nameHint:"Title Case, reads as a real event. Keyword slot #1.",shortDescription:"Short description",shortHint:"Shown on the card (1 line). Keyword slot #2 — different terms than the name.",longDescription:"Long description",longHint:"Detail page only · NOT indexed → pure hook/sell.",cardMedia:"Card media (image / mp4)",dropMedia:"Drop a 16:9 image or .mp4 loop",clickChoose:"or click to choose",footer:"Live preview only (not saved to ASC). Lock copy + composition here, then localize natively to 49 and upload media in ASC. Media spec: 16:9, 1920×1080+, video ≤30s seamless loop, no text/logo/border/gradient."},
+ pl:{switchProduct:"In-App Studio — zmień produkt",keywordsPurpose:"Słowa kluczowe i pozycje w App Store",locale:"Lokalizacja",toggleTheme:"Przełącz ciemny motyw",title:"Wydarzenia In-App",subtitle:"Karta 16:9 + szczegóły 9:16 · indeksowane: nazwa 30 · krótki 50 · długi 120 (nieindeksowany)",eventCard:"Karta wydarzenia · 16:9",dropHint:"upuść obraz 16:9 / pętlę .mp4 w edytorze →",appleGradient:"Apple automatycznie dodaje dolny gradient i nakłada ten tekst — dolna jedna trzecia grafiki powinna być czysta, bez osadzonego tekstu, logo ani ramek.",detailPage:"Strona szczegółów · 9:16",get:"POBIERZ",name:"Nazwa",indexed:"indeksowane",nameHint:"Każde słowo wielką literą, brzmi jak prawdziwe wydarzenie. Miejsce na słowa kluczowe nr 1.",shortDescription:"Krótki opis",shortHint:"Wyświetlany na karcie (1 wiersz). Miejsce na słowa kluczowe nr 2 — inne wyrażenia niż w nazwie.",longDescription:"Długi opis",longHint:"Tylko strona szczegółów · NIE jest indeksowany → czysty haczyk sprzedażowy.",cardMedia:"Multimedia karty (obraz / mp4)",dropMedia:"Upuść obraz 16:9 lub pętlę .mp4",clickChoose:"lub kliknij, aby wybrać",footer:"Tylko podgląd na żywo (nie jest zapisywany w ASC). Ustal tutaj tekst i kompozycję, następnie przygotuj 49 lokalizacji i prześlij multimedia w ASC. Specyfikacja: 16:9, 1920×1080+, wideo ≤30 s w płynnej pętli, bez tekstu, logo, ramki ani gradientu."},
+ ru:{switchProduct:"In-App Studio — переключить продукт",keywordsPurpose:"Ключи и позиции в App Store",locale:"Локаль",toggleTheme:"Переключить тёмную тему",title:"События In-App",subtitle:"Карточка 16:9 + детали 9:16 · индексируется: название 30 · краткое 50 · полное 120 (не индексируется)",eventCard:"Карточка события · 16:9",dropHint:"перетащите изображение 16:9 / цикл .mp4 в редактор →",appleGradient:"Apple автоматически добавляет нижний градиент и накладывает этот текст — оставьте нижнюю треть изображения чистой, без встроенного текста, логотипов и рамок.",detailPage:"Страница события · 9:16",get:"ЗАГРУЗИТЬ",name:"Название",indexed:"индексируется",nameHint:"Title Case, звучит как настоящее событие. Слот ключевых слов №1.",shortDescription:"Краткое описание",shortHint:"Показывается на карточке (1 строка). Слот ключевых слов №2 — другие слова, чем в названии.",longDescription:"Полное описание",longHint:"Только страница события · НЕ индексируется → чистый хук/продажа.",cardMedia:"Медиа карточки (изображение / mp4)",dropMedia:"Перетащите изображение 16:9 или цикл .mp4",clickChoose:"или нажмите, чтобы выбрать",footer:"Только предпросмотр (не сохраняется в ASC). Зафиксируйте здесь текст и композицию, затем локализуйте на 49 языков и загрузите медиа в ASC. Требования: 16:9, 1920×1080+, видео ≤30 с, бесшовный цикл, без текста, логотипа, рамки и градиента."}
+};
+Object.assign(UI.en,{adsPurpose:"Apple Ads performance",screenshotsPurpose:"App Store screenshots",videoPurpose:"Video ad production",inappPurpose:"In-App Event cards",appId:"App ID"});
+Object.assign(UI.pl,{adsPurpose:"Wyniki Apple Ads",screenshotsPurpose:"Zrzuty ekranu do App Store",videoPurpose:"Produkcja reklam wideo",inappPurpose:"Karty wydarzeń In-App",appId:"ID aplikacji"});
+Object.assign(UI.ru,{adsPurpose:"Эффективность Apple Ads",screenshotsPurpose:"Скриншоты для App Store",videoPurpose:"Создание видеорекламы",inappPurpose:"Карточки событий In-App",appId:"ID приложения"});
+let uiLang=(()=>{try{const v=localStorage.getItem(UI_LANG_KEY);return UI[v]?v:"en"}catch(e){return"en"}})();
+function applyUiLanguage(){
+ document.documentElement.lang=uiLang;
+ document.querySelectorAll("[data-i18n]").forEach(el=>{const text=UI[uiLang][el.dataset.i18n];if(text)el.textContent=text});
+ document.querySelectorAll("[data-i18n-title]").forEach(el=>el.title=UI[uiLang][el.dataset.i18nTitle]);
+ document.querySelectorAll("[data-i18n-aria]").forEach(el=>el.setAttribute("aria-label",UI[uiLang][el.dataset.i18nAria]));
+ document.querySelectorAll("#uiLanguage button").forEach(b=>b.classList.toggle("on",b.dataset.lang===uiLang));
+}
+document.querySelectorAll("#uiLanguage button").forEach(b=>b.onclick=()=>{uiLang=b.dataset.lang;try{localStorage.setItem(UI_LANG_KEY,uiLang)}catch(e){}applyUiLanguage()});
+window.addEventListener("storage",e=>{if(e.key===UI_LANG_KEY&&UI[e.newValue]){uiLang=e.newValue;applyUiLanguage()}});
+applyUiLanguage();
 let EVENTS=[];  // loaded from events.json (source of truth — all locales + media)
 const LIMITS={name:30,short:50,long:120};
 const BADGE_LABEL={PREMIERE:"Premiere",SPECIAL_EVENT:"Event",CHALLENGE:"Challenge",LIVE_EVENT:"Live Event",MAJOR_UPDATE:"Major Update",NEW_SEASON:"New Season",COMPETITION:"Competition"};

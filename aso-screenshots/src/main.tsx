@@ -15,6 +15,7 @@ import './styles/highlight.css';
 import './styles/ds-bridge.css';
 import './styles/polish.css'; // Adapty-style chrome pass — keep last
 import { I18nProvider } from '../../shared/i18n/I18n';
+import { screenshotMessages } from './i18n';
 
 loadPresetFonts();
 
@@ -69,6 +70,6 @@ startStudioStateSync();
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <I18nProvider><App /></I18nProvider>
+    <I18nProvider messages={screenshotMessages}><App /></I18nProvider>
   </StrictMode>,
 );

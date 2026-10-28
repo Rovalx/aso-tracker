@@ -7,14 +7,15 @@ import { SettingsModal } from './components/SettingsModal';
 import { KeyMissingDialog } from './components/KeyMissingDialog';
 import { useStudio } from './state/studio';
 import { useKeyGate } from './state/keyGate';
+import { LanguageSwitcher, useI18n } from '../../shared/i18n/I18n';
 
 const STEPS = [
-  { value: '/setup', label: 'Setup', n: 1 },
-  { value: '/catalog', label: 'Style', n: 2 },
-  { value: '/editor', label: 'Editor', n: 3 },
-  { value: '/polish', label: 'AI Polish', n: 4 },
-  { value: '/locales', label: 'Locales', n: 5 },
-  { value: '/export', label: 'Export', n: 6 },
+  { value: '/setup', key: 'screenshots.step.setup', n: 1 },
+  { value: '/catalog', key: 'screenshots.step.style', n: 2 },
+  { value: '/editor', key: 'screenshots.step.editor', n: 3 },
+  { value: '/polish', key: 'screenshots.step.polish', n: 4 },
+  { value: '/locales', key: 'screenshots.step.locales', n: 5 },
+  { value: '/export', key: 'screenshots.step.export', n: 6 },
 ];
 
 /** Tiny pill in the topbar — running cost of all gpt-image-2 calls in this project.
@@ -43,6 +44,7 @@ function SpendCounter() {
 }
 
 export function AppShell() {
+  const { t } = useI18n();
   const nav = useNavigate();
   const loc = useLocation();
   // PPO / Icon Generator sit outside the wizard: no step is highlighted there,
@@ -71,19 +73,20 @@ export function AppShell() {
               key={s.value}
               className={`step ${isActive ? 'active' : ''}${reachable ? '' : ' disabled'}`}
               onClick={() => { if (reachable) nav(s.value); }}
-              title={!reachable ? 'Complete the previous step first' : undefined}
+              title={!reachable ? t('screenshots.completePrevious') : undefined}
               style={!reachable ? { opacity: 0.4, cursor: 'not-allowed' } : undefined}
               aria-disabled={!reachable}
             >
               <span className="num">{s.n}</span>
-              <span className="step-label">{s.label}</span>
+              <span className="step-label">{t(s.key)}</span>
             </div>
           );
         })}
         actions={
           <>
+            <LanguageSwitcher compact />
             <SpendCounter />
-            <Button variant="ghost" size="icon" aria-label="Settings" onClick={openSettings}>
+            <Button variant="ghost" size="icon" aria-label={t('screenshots.settings')} onClick={openSettings}>
               <Settings size={16} />
             </Button>
           </>

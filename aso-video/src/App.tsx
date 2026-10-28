@@ -57,6 +57,7 @@ import { installBridge } from './lib/claudeBridge';
 import { LightboxRoot } from './components/Lightbox';
 import { LibrarySidebar } from './components/LibrarySidebar';
 import { StudioSwitcher } from '../../shared/shell/StudioSwitcher';
+import { LanguageSwitcher, useI18n } from '../../shared/i18n/I18n';
 // MockupProvider/useMockupToggle now live inside OutputNode itself.
 import SettingsModal from './components/SettingsModal';
 import { TimelineEditor } from './components/TimelineEditor';
@@ -107,6 +108,7 @@ const NODE_MENU_SECTIONS: { title: string; items: NodeMenuItem[] }[] = [
 
 // Flat lookup for places that just need a label (delete confirms etc).
 function GraphEditor() {
+  const { t } = useI18n();
   // The toolbar floats over the canvas and may wrap on narrow windows; publish
   // where it ends so the library rail and the timeline start right below it.
   const toolbarRef = useRef<HTMLDivElement>(null);
@@ -915,23 +917,24 @@ function GraphEditor() {
           buttons stay reachable instead of overflowing off-screen. */}
       <div className="vid-toolbar" ref={toolbarRef}>
         <StudioSwitcher current="video" />
-        <div className="ds-seg" role="tablist" aria-label="Editor mode">
-          <button role="tab" aria-selected={editorMode === 'nodes'} onClick={() => setEditorMode('nodes')}>Nodes</button>
-          <button role="tab" aria-selected={editorMode === 'timeline'} onClick={() => setEditorMode('timeline')}>Timeline</button>
+        <LanguageSwitcher compact />
+        <div className="ds-seg" role="tablist" aria-label={t('video.editorMode')}>
+          <button role="tab" aria-selected={editorMode === 'nodes'} onClick={() => setEditorMode('nodes')}>{t('video.nodes')}</button>
+          <button role="tab" aria-selected={editorMode === 'timeline'} onClick={() => setEditorMode('timeline')}>{t('video.timeline')}</button>
         </div>
         <div className="vid-toolbar-gap" />
         <div style={{ position: 'relative' }}>
           <button className={`ds-btn ds-btn-ghost${showLoad ? ' on' : ''}`} onClick={() => setShowLoad((v) => !v)}>
-            Workflows <span className="vid-caret">▾</span>
+            {t('video.workflows')} <span className="vid-caret">▾</span>
           </button>
           {showLoad && (
             <div className="ds-pop vid-pop" style={{ minWidth: 260, maxHeight: '70vh', overflowY: 'auto' }}>
               <button className="ds-pop-row" onClick={() => { setShowLoad(false); void handleSaveWorkflow(); }}>
-                Save current as…
+                {t('video.saveCurrent')}
               </button>
               <div className="vid-pop-sep" />
-              <div className="ds-nav-label" style={{ padding: '4px 10px' }}>Load</div>
-              {workflows.length === 0 && <div className="vid-pop-empty">No saved workflows</div>}
+              <div className="ds-nav-label" style={{ padding: '4px 10px' }}>{t('video.load')}</div>
+              {workflows.length === 0 && <div className="vid-pop-empty">{t('video.noWorkflows')}</div>}
               {workflows.map((n) => (
                 <div key={n} className="ds-pop-row" role="button" onClick={() => handleLoadWorkflow(n)}>
                   <span style={{ flex: 1, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{n}</span>
@@ -958,10 +961,10 @@ function GraphEditor() {
               setInfluencers(await listInfluencers());
               setShowInf((v) => !v);
             }}
-          >Influencers <span className="vid-caret">▾</span></button>
+          >{t('video.influencers')} <span className="vid-caret">▾</span></button>
           {showInf && (
             <div className="ds-pop vid-pop" style={{ minWidth: 260, maxHeight: '70vh', overflowY: 'auto' }}>
-              {influencers.length === 0 && <div className="vid-pop-empty">None yet — generate an image and click Save Influencer</div>}
+              {influencers.length === 0 && <div className="vid-pop-empty">{t('video.noInfluencers')}</div>}
               {influencers.map((inf) => (
                 <div key={inf.name} className="ds-pop-row" role="button" onClick={() => handleLoadInfluencer(inf)}>
                   <img src={inf.imageUrl} alt="" style={{ width: 28, height: 28, borderRadius: 'var(--ds-radius-inner)', objectFit: 'cover', background: 'var(--ds-panel-2)', flex: 'none' }} />
@@ -980,7 +983,7 @@ function GraphEditor() {
         <div className="vid-toolbar-gap" />
         <div style={{ position: 'relative' }}>
           <button className={`ds-btn ds-btn-ghost${showAdd ? ' on' : ''}`} onClick={() => setShowAdd((v) => !v)}>
-            + Add node <span className="vid-caret">▾</span>
+            + {t('video.addNode')} <span className="vid-caret">▾</span>
           </button>
           {showAdd && (
             <div className="ds-pop vid-pop" style={{ minWidth: 340, maxHeight: '70vh', overflowY: 'auto' }}>
@@ -1004,7 +1007,7 @@ function GraphEditor() {
             </div>
           )}
         </div>
-        <button className="ds-btn ds-btn-ghost" onClick={handleAutoLayout} title="Auto-arrange nodes by topology — uses each card's actual rendered size so wide/tall cards don't overlap">Arrange</button>
+        <button className="ds-btn ds-btn-ghost" onClick={handleAutoLayout} title={t('video.arrangeHint')}>{t('video.arrange')}</button>
         <button
           className="ds-btn ds-btn-ghost ds-btn-danger"
           onClick={handleReset}
