@@ -6,6 +6,7 @@ import { campaignDisplayName } from "../lib/campaignNames.ts";
 import FillPage from "../components/FillPage.tsx";
 import { useCountry } from "../lib/CountryContext.tsx";
 import { ScopeBadge } from "../components/CountrySwitcher.tsx";
+import { useI18n } from "../../../shared/i18n/I18n.tsx";
 
 interface NegRow {
   id: number;
@@ -19,6 +20,7 @@ interface NegRow {
 }
 
 export default function Negatives() {
+  const { language, t } = useI18n();
   const { selected: appSel } = useApp();
   const { country, isWorld, label } = useCountry();
   const [rows, setRows] = useState<NegRow[]>([]);
@@ -48,34 +50,34 @@ export default function Negatives() {
     <FillPage>
       <div className="topbar">
         <div className="title-with-scope">
-          <h1 className="ds-page-title" title={`${isWorld ? "Все страны выбранного приложения" : `Минус-слова кампаний, которые работают в стране «${label}» (минус-слово действует на все страны кампании)`} · защита от нерелевантных запросов и пересечения кампаний`}>Минус-слова</h1>
+          <h1 className="ds-page-title" title={t(isWorld ? "negatives.descriptionWorld" : "negatives.descriptionCountry", { country: label })}>{t("negatives.title")}</h1>
           <ScopeBadge />
         </div>
         <div className="controls">
-          <input type="text" aria-label="Поиск минус-слов" placeholder="Найти слово или кампанию" value={filter} onChange={(e) => setFilter(e.target.value)} />
-          <button onClick={doExport} disabled={filtered.length === 0}>Экспорт CSV</button>
+          <input type="text" aria-label={t("negatives.searchLabel")} placeholder={t("negatives.searchPlaceholder")} value={filter} onChange={(e) => setFilter(e.target.value)} />
+          <button onClick={doExport} disabled={filtered.length === 0}>{t("common.exportCsv")}</button>
         </div>
       </div>
 
       <div className="page-stats fold">
-        <span>Всего <b>{rows.length}</b></span>
-        {filter && <span>По фильтру <b>{filtered.length}</b></span>}
-        <span className="page-stats-note">Блокируют нерелевантные показы и пересечение владельцев ключей · добавляются из поисковых запросов или через подтверждённую очередь</span>
+        <span>{t("negatives.total")} <b>{rows.length}</b></span>
+        {filter && <span>{t("negatives.filtered")} <b>{filtered.length}</b></span>}
+        <span className="page-stats-note">{t("negatives.note")}</span>
       </div>
 
-      {loading ? <div className="data-state loading">Загружаем минус-слова…</div> : filtered.length === 0 ? (
-        <div className="data-state">{isWorld ? "Нет минус-слов по этому фильтру." : `Нет минус-слов в кампаниях, которые работают в стране «${label}».`}</div>
+      {loading ? <div className="data-state loading">{t("negatives.loading")}</div> : filtered.length === 0 ? (
+        <div className="data-state">{t(isWorld ? "negatives.emptyWorld" : "negatives.emptyCountry", { country: label })}</div>
       ) : (
         <div className="table-wrap">
         <table>
           <thead>
             <tr>
-              <th>Слово</th>
-              <th title="Тип соответствия">Тип</th>
-              <th>Кампания</th>
-              <th>Страна</th>
-              <th>Добавлено</th>
-              <th className="num">ID Apple</th>
+              <th>{t("negatives.word")}</th>
+              <th title={t("negatives.matchType")}>{t("negatives.type")}</th>
+              <th>{t("common.campaign")}</th>
+              <th>{t("common.country")}</th>
+              <th>{t("negatives.added")}</th>
+              <th className="num">{t("negatives.appleId")}</th>
             </tr>
           </thead>
           <tbody>
@@ -84,8 +86,8 @@ export default function Negatives() {
                 <td><strong>{r.text}</strong></td>
                 <td><span className="badge">{r.match_type}</span></td>
                 <td className="muted cell-clip" title={r.campaign_name ? campaignDisplayName(r.campaign_name) : undefined}>{r.campaign_name ? campaignDisplayName(r.campaign_name) : "—"}</td>
-                <td>{r.country === "WW" ? "Мультигео" : r.country ?? "—"}</td>
-                <td className="muted nowrap">{new Date(r.added_at).toLocaleString("ru-RU", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" })}</td>
+                <td>{r.country === "WW" ? t("negatives.multiGeo") : r.country ?? "—"}</td>
+                <td className="muted nowrap">{new Date(r.added_at).toLocaleString(language === "pl" ? "pl-PL" : "en-GB", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" })}</td>
                 <td className="num muted">{r.remote_id ?? "—"}</td>
               </tr>
             ))}
