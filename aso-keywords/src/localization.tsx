@@ -8,6 +8,7 @@ const runtimeTerms = new Set<string>();
 runtimeTerms.add('Δ1д');
 runtimeTerms.add('Δ7д');
 runtimeTerms.add('мс');
+runtimeTerms.add('кл.');
 
 // Country and App Store localization names live in shared data rather than JSX,
 // so the generated phrase catalogue cannot discover them. Build those entries
@@ -61,6 +62,24 @@ Object.assign(messages.en, {
   'Δ7д': 'Δ7d',
   'мс': 'ms',
   '(кэш)': '(cache)',
+  'EN-витрины': 'English storefronts',
+  'английский — основной язык': 'English is the primary language',
+  'LatAm es-MX': 'Latin America · es-MX',
+  'индексируют es-MX, без US': 'indexes es-MX, excluding the US',
+  'Индексируют ru': 'Indexes Russian',
+  'русский основной или вторичный': 'Russian is primary or secondary',
+  'матрица «ключ × страна»': 'keyword × country matrix',
+  'Все отслеживаемые': 'All tracked',
+  'Наборы колонок матрицы': 'Matrix column sets',
+  'больше всего ключей': 'most keywords',
+  'нет позиций': 'no rankings',
+  'открыть': 'open',
+  'соседняя': 'adjacent country',
+  'основной': 'primary',
+  'кл.': 'keywords',
+  'Все отслеживаемые ·': 'All tracked ·',
+  'Открыть позиции этой страны': 'Open rankings for this country',
+  'Открыть позиции:': 'Open rankings:',
 });
 Object.assign(messages.pl, {
   'Добавьте регион и ключевые слова, чтобы начать отслеживать позиции.': 'Dodaj region i słowa kluczowe, aby rozpocząć śledzenie pozycji.',
@@ -82,6 +101,24 @@ Object.assign(messages.pl, {
   'Δ7д': 'Δ7d',
   'мс': 'ms',
   '(кэш)': '(pamięć podręczna)',
+  'EN-витрины': 'Storefronty anglojęzyczne',
+  'английский — основной язык': 'angielski jest językiem głównym',
+  'LatAm es-MX': 'Ameryka Łacińska · es-MX',
+  'индексируют es-MX, без US': 'indeksują es-MX, bez USA',
+  'Индексируют ru': 'Indeksują rosyjski',
+  'русский основной или вторичный': 'rosyjski jest językiem głównym lub dodatkowym',
+  'матрица «ключ × страна»': 'macierz „słowo kluczowe × kraj”',
+  'Все отслеживаемые': 'Wszystkie śledzone',
+  'Наборы колонок матрицы': 'Zestawy kolumn macierzy',
+  'больше всего ключей': 'najwięcej słów kluczowych',
+  'нет позиций': 'brak pozycji',
+  'открыть': 'otwórz',
+  'соседняя': 'sąsiedni kraj',
+  'основной': 'główny',
+  'кл.': 'sł. klucz.',
+  'Все отслеживаемые ·': 'Wszystkie śledzone ·',
+  'Открыть позиции этой страны': 'Otwórz pozycje dla tego kraju',
+  'Открыть позиции:': 'Otwórz pozycje:',
 });
 
 const originals = new WeakMap<Node, string>();
@@ -96,6 +133,11 @@ function translate(value: string, language: UiLanguage): string {
   // dates and app names. Replace known phrases longest-first before falling
   // back to the older Cyrillic-run matcher.
   let translated = value;
+  translated = translated
+    .replace(/Топ-(\d+) по ключам/g, language === 'pl' ? 'Top $1 wg liczby słów kluczowych' : 'Top $1 by keyword count')
+    .replace(/(\d+) кл\./g, language === 'pl' ? '$1 sł. klucz.' : '$1 keywords')
+    .replace(/ср\.\s*#?(\d+)/g, language === 'pl' ? 'śr. #$1' : 'avg. #$1')
+    .replace(/(\d+) витрин/g, language === 'pl' ? '$1 storefrontów' : '$1 storefronts');
   const phrases = Object.keys(messages[language])
     .filter((key) => (key.length >= 4 || runtimeTerms.has(key)) && /[\u0400-\u04ff]/.test(key) && translated.includes(key))
     .sort((a, b) => b.length - a.length);
