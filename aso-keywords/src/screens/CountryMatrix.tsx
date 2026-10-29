@@ -4,6 +4,7 @@ import Picker from '../components/Picker';
 import { useDismiss } from '../components/useDismiss';
 import { LocaleChips } from '../components/CountryPalette';
 import { tipProps, type TipRow } from '../../../shared/charts/Charts';
+import { useI18n } from '../../../shared/i18n/I18n';
 import {
   countriesApi,
   rankChange,
@@ -75,6 +76,7 @@ export default function CountryMatrix({
   onOpenStorefront: (locale: string) => void;
   refreshKey: number;
 }) {
+  const { t } = useI18n();
   // An edited column list belongs to the set it was made from; switching sets drops it.
   const draftScope = `${appId}:${activeSet?.id ?? ''}`;
   const [draftState, setDraftState] = useState<{ scope: string; locales: string[] } | null>(null);
@@ -92,7 +94,12 @@ export default function CountryMatrix({
   // Fetch the matrix for the visible columns; poll like the positions view.
   const columnsKey = columns.join(',');
   useEffect(() => {
-    if (!appId || !columnsKey) return;
+    if (!appId || !columnsKey) {
+      setData(null);
+      setLoading(false);
+      setError(null);
+      return;
+    }
     const controller = new AbortController();
     let first = true;
     const load = () => {
@@ -235,8 +242,8 @@ export default function CountryMatrix({
           className={`ds-btn mx-filter ${onlyTop10 ? 'active' : ''}`}
           aria-pressed={onlyTop10}
           onClick={() => setOnlyTop10((on) => !on)}
-          title="Только ключи, которые в топ-10 хотя бы в одной из показанных стран"
-        ><Icon name="target" /> В топ‑10 где-либо</button>
+          title={t('kw.anyTop10Hint')}
+        ><Icon name="target" /> {t('kw.anyTop10')}</button>
         <span className="toolbar-spacer" />
         <label className="search-field">
           <Icon name="search" />
@@ -247,7 +254,7 @@ export default function CountryMatrix({
       <div className="mx-summary">
         <span><b>{rows.length.toLocaleString('ru-RU')}</b> {plural(rows.length, 'ключ', 'ключа', 'ключей')}</span>
         <span><b>{visibleColumns.length}</b> {plural(visibleColumns.length, 'страна', 'страны', 'стран')}</span>
-        <span>в топ‑10 где-либо: <b>{anyTop10}</b></span>
+        <span>{t('kw.anyTop10Summary')} <b>{anyTop10}</b></span>
         <span className="mx-legend" aria-label="Шкала позиций">
           <i className="mx-rank mx-top3">1–3</i><i className="mx-rank mx-top10">4–10</i><i className="mx-rank mx-top50">11–50</i><i className="mx-rank mx-deep">51+</i><i className="mx-rank mx-zero">0</i> нет позиции: не в выдаче или не отслеживается</span>
         <span className="toolbar-spacer" />
@@ -256,7 +263,9 @@ export default function CountryMatrix({
       </div>
 
       <div className="mx-scroll" ref={scrollRef} onScroll={onScroll}>
-        {error && !data ? (
+        {!columns.length ? (
+          <div className="mx-empty">Добавьте регион и ключевые слова, чтобы начать отслеживать позиции.</div>
+        ) : error && !data ? (
           <div className="mx-empty">Не удалось загрузить матрицу: {error}</div>
         ) : !loading && data && rows.length === 0 ? (
           <div className="mx-empty">{query || onlyTop10 ? 'Нет ключей под фильтр.' : 'В выбранных странах пока нет ключевых слов.'}</div>

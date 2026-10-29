@@ -180,7 +180,12 @@ app.post('/api/apps', async (req, res) => {
   }
   apps.push(body);
   saveApps(apps);
-  res.json({ ok: true, app: body });
+  // A new app needs at least one storefront before the Keywords UI can add
+  // phrases or run an update. Start with the US storefront (the same country
+  // used by the add-app lookup) instead of leaving the matrix in a zero-column
+  // state.
+  saveKeywords(body.id, { us: [] });
+  res.json({ ok: true, id: body.id, app: body });
 });
 
 app.delete('/api/apps/:id', (req, res) => {
