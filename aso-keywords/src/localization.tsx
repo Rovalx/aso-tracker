@@ -43,6 +43,30 @@ for (const language of ['en', 'pl'] as const) {
 }
 
 Object.assign(messages.en, {
+  'ключ': 'key',
+  'ключа': 'keys',
+  'ключей': 'keys',
+  'Сила приложения S = 0,6·(log10(оценок+1)/6) + 0,25·(ключ точно в названии) + 0,15·(обновление < 90 дней); неизвестное = 0,5 доли.': 'App strength S = 0.6·(log10(ratings+1)/6) + 0.25·(exact keyword in title) + 0.15·(updated < 90 days); unknown = half credit.',
+  'Difficulty D = 100·Σ wᵢ·Sᵢ / Σ wᵢ по топ-10 выдачи, wᵢ = 1/√i. Нужны оценки минимум у 3 приложений.': 'Difficulty D = 100·Σ wᵢ·Sᵢ / Σ wᵢ across the top 10 results, wᵢ = 1/√i. Ratings are required for at least 3 apps.',
+  'Chance C = 100 / (1 + e^((D − A)/12)), A — сила нашего приложения по тем же правилам.': 'Chance C = 100 / (1 + e^((D − A)/12)), where A is our app strength calculated using the same rules.',
+  'Opportunity O = Popularity × C/100 × (1 − R); R = 1 при нашей позиции в топ-3, 0,5 — в топ-10, иначе 0. Нет популярности Apple Ads — нет Opportunity.': 'Opportunity O = Popularity × C/100 × (1 − R); R = 1 when we rank in the top 3, 0.5 in the top 10, otherwise 0. Without Apple Ads popularity, Opportunity is unavailable.',
+  'Стоматология и КЛКТ': 'Dentistry and CBCT',
+  'DICOM и PACS': 'DICOM and PACS',
+  'МРТ': 'MRI',
+  'КТ': 'CT',
+  'Рентген': 'X-ray',
+  'Медицинские снимки': 'Medical imaging',
+  'Лимит Apple: пауза 5 мин, потом продолжим': 'Apple limit: pausing for 5 minutes, then continuing',
+  'Метаданные': 'Metadata for',
+  'приложений': 'apps',
+  'Apple ограничил iTunes API': 'Apple rate-limited the iTunes API',
+  'пауза 5 мин, темп снижен вдвое': 'pausing for 5 minutes; rate halved',
+  'Apple не ответил за 15 секунд': 'Apple did not respond within 15 seconds',
+  'Apple вернул HTTP': 'Apple returned HTTP',
+  'нет ответа': 'no response',
+  'пауза после лимита Apple': 'paused after hitting the Apple limit',
+  'Apple держит лимит даже после пауз:': 'Apple is still rate-limiting after pauses:',
+  'ручное обновление ещё идёт — ночной прогон ждёт его окончания': 'A manual update is still running; the nightly run is waiting for it to finish',
   'Добавьте регион и ключевые слова, чтобы начать отслеживать позиции.': 'Add a storefront and keywords to start tracking rankings.',
   'Общий запрос темы': 'General topic query',
   'без брендов': 'without brands',
@@ -82,6 +106,39 @@ Object.assign(messages.en, {
   'Открыть позиции:': 'Open rankings:',
 });
 Object.assign(messages.pl, {
+  'ключ': 'słowo kluczowe',
+  'ключа': 'słowa kluczowe',
+  'ключей': 'słów kluczowych',
+  'страна': 'kraj',
+  'страны': 'kraje',
+  'стран': 'krajów',
+  'стране': 'kraju',
+  'странах': 'krajach',
+  'Общий список приложения': 'Ogólna lista aplikacji',
+  'Ключ отслеживается во всех': 'Słowo kluczowe jest śledzone we wszystkich',
+  'приложения и автоматически — в странах, добавленных позже. Удаление общего ключа убирает его отовсюду.': 'aplikacji oraz automatycznie w krajach dodanych później. Usunięcie wspólnego słowa kluczowego usuwa je ze wszystkich krajów.',
+  'Среди ключей есть не английские': 'Wśród słów kluczowych są frazy w językach innych niż angielski',
+  'Сила приложения S = 0,6·(log10(оценок+1)/6) + 0,25·(ключ точно в названии) + 0,15·(обновление < 90 дней); неизвестное = 0,5 доли.': 'Siła aplikacji S = 0,6·(log10(ocen+1)/6) + 0,25·(dokładne słowo w nazwie) + 0,15·(aktualizacja < 90 dni); brak danych = połowa punktów.',
+  'Difficulty D = 100·Σ wᵢ·Sᵢ / Σ wᵢ по топ-10 выдачи, wᵢ = 1/√i. Нужны оценки минимум у 3 приложений.': 'Trudność D = 100·Σ wᵢ·Sᵢ / Σ wᵢ dla top 10 wyników, wᵢ = 1/√i. Potrzebne są oceny co najmniej 3 aplikacji.',
+  'Chance C = 100 / (1 + e^((D − A)/12)), A — сила нашего приложения по тем же правилам.': 'Szansa C = 100 / (1 + e^((D − A)/12)), gdzie A to siła naszej aplikacji liczona według tych samych zasad.',
+  'Opportunity O = Popularity × C/100 × (1 − R); R = 1 при нашей позиции в топ-3, 0,5 — в топ-10, иначе 0. Нет популярности Apple Ads — нет Opportunity.': 'Możliwość O = Popularność × C/100 × (1 − R); R = 1 dla naszej pozycji w top 3, 0,5 w top 10, w pozostałych przypadkach 0. Bez popularności Apple Ads nie ma wyniku Możliwości.',
+  'Стоматология и КЛКТ': 'Stomatologia i CBCT',
+  'DICOM и PACS': 'DICOM i PACS',
+  'МРТ': 'MRI',
+  'КТ': 'TK',
+  'Рентген': 'RTG',
+  'Медицинские снимки': 'Obrazowanie medyczne',
+  'Лимит Apple: пауза 5 мин, потом продолжим': 'Limit Apple: przerwa 5 min, potem kontynuujemy',
+  'Метаданные': 'Metadane',
+  'приложений': 'aplikacji',
+  'Apple ограничил iTunes API': 'Apple ograniczył API iTunes',
+  'пауза 5 мин, темп снижен вдвое': 'przerwa 5 min, tempo zmniejszone o połowę',
+  'Apple не ответил за 15 секунд': 'Apple nie odpowiedział w ciągu 15 sekund',
+  'Apple вернул HTTP': 'Apple zwrócił HTTP',
+  'нет ответа': 'brak odpowiedzi',
+  'пауза после лимита Apple': 'przerwa po osiągnięciu limitu Apple',
+  'Apple держит лимит даже после пауз:': 'Apple nadal ogranicza żądania mimo przerw:',
+  'ручное обновление ещё идёт — ночной прогон ждёт его окончания': 'Ręczna aktualizacja nadal trwa — nocne uruchomienie czeka na jej zakończenie',
   'Добавьте регион и ключевые слова, чтобы начать отслеживать позиции.': 'Dodaj region i słowa kluczowe, aby rozpocząć śledzenie pozycji.',
   'Общий запрос темы': 'Ogólne zapytanie tematyczne',
   'без брендов': 'bez marek',
@@ -121,8 +178,8 @@ Object.assign(messages.pl, {
   'Открыть позиции:': 'Otwórz pozycje:',
 });
 
-const originals = new WeakMap<Node, string>();
-const originalAttributes = new WeakMap<Element, Map<string, string>>();
+const originals = new WeakMap<Node, { source: string; translated: string }>();
+const originalAttributes = new WeakMap<Element, Map<string, { source: string; translated: string }>>();
 const attributes = ['aria-label', 'title', 'placeholder', 'data-tooltip', 'alt'];
 
 function translate(value: string, language: UiLanguage): string {
@@ -156,9 +213,13 @@ function localizeNode(root: Node, language: UiLanguage) {
   if (root.nodeType === Node.TEXT_NODE) nodes.push(root as Text);
   while (walker.nextNode()) nodes.push(walker.currentNode as Text);
   for (const node of nodes) {
-    const source = originals.get(node) ?? node.data;
-    originals.set(node, source);
+    const saved = originals.get(node);
+    // React commonly reuses the same Text node for changing counters/statuses.
+    // If its current value differs from our last translated output, it is new
+    // source content and must replace the previous source in the cache.
+    const source = saved && node.data === saved.translated ? saved.source : node.data;
     const next = translate(source, language);
+    originals.set(node, { source, translated: next });
     if (node.data !== next) node.data = next;
   }
   const elements: Element[] = root instanceof Element ? [root, ...root.querySelectorAll('*')] : [];
@@ -168,8 +229,10 @@ function localizeNode(root: Node, language: UiLanguage) {
     for (const name of attributes) {
       const current = element.getAttribute(name);
       if (current == null) continue;
-      const source = saved.get(name) ?? current; saved.set(name, source);
+      const previous = saved.get(name);
+      const source = previous && current === previous.translated ? previous.source : current;
       const next = translate(source, language);
+      saved.set(name, { source, translated: next });
       if (current !== next) element.setAttribute(name, next);
     }
   }

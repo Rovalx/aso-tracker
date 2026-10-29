@@ -5,6 +5,7 @@ import { STOREFRONTS } from '../countries';
 import { LANGUAGE_LABEL, SCRIPT_LABEL, detectLanguage, parseKeywordList, storefrontsForLanguage, type KeywordLanguage } from '../../server/keyword-language';
 import { keywordTableApi, tagKey, type KeywordPair } from '../keywordTableApi';
 import { tipProps } from '../../../shared/charts/Charts';
+import { useI18n, type UiLanguage } from '../../../shared/i18n/I18n';
 import './BulkAddDialog.css';
 
 const ALL_CODES = STOREFRONTS.map((storefront) => storefront.code);
@@ -14,6 +15,16 @@ const CONFIDENCE: Record<KeywordLanguage['confidence'], string> = {
   letters: 'по буквам языка',
   words: 'по словам',
   default: 'по умолчанию для письменности',
+};
+
+const SCRIPT_UI_LABEL: Record<Exclude<UiLanguage, 'ru'>, Record<KeywordLanguage['script'], string>> = {
+  en: { latin: 'Latin', cyrillic: 'Cyrillic', cjk: 'Chinese characters', hangul: 'Hangul', kana: 'Kana', arabic: 'Arabic script', hebrew: 'Hebrew', greek: 'Greek', thai: 'Thai', devanagari: 'Devanagari', other: 'Other' },
+  pl: { latin: 'alfabet łaciński', cyrillic: 'cyrylica', cjk: 'znaki chińskie', hangul: 'hangul', kana: 'kana', arabic: 'pismo arabskie', hebrew: 'hebrajski', greek: 'grecki', thai: 'tajski', devanagari: 'dewanagari', other: 'inne' },
+};
+
+const CONFIDENCE_UI_LABEL: Record<Exclude<UiLanguage, 'ru'>, Record<KeywordLanguage['confidence'], string>> = {
+  en: { script: 'detected from script', letters: 'detected from language-specific letters', words: 'detected from words', default: 'default for this script' },
+  pl: { script: 'rozpoznano po piśmie', letters: 'rozpoznano po charakterystycznych literach', words: 'rozpoznano po słowach', default: 'domyślny język dla tego pisma' },
 };
 
 /**
@@ -40,6 +51,12 @@ export default function BulkAddDialog({
   onClose: () => void;
   onDone: (map: Record<string, string[]>, added: number) => void;
 }) {
+  const { language } = useI18n();
+  const displayLanguage = language === 'pl' ? 'pl-PL' : language === 'en' ? 'en-GB' : 'ru-RU';
+  const languageNames = useMemo(() => new Intl.DisplayNames([displayLanguage], { type: 'language' }), [displayLanguage]);
+  const languageLabel = (code: string) => languageNames.of(code) ?? LANGUAGE_LABEL[code] ?? code;
+  const scriptLabel = (script: KeywordLanguage['script']) => language === 'ru' ? SCRIPT_LABEL[script] : SCRIPT_UI_LABEL[language][script];
+  const confidenceLabel = (confidence: KeywordLanguage['confidence']) => language === 'ru' ? CONFIDENCE[confidence] : CONFIDENCE_UI_LABEL[language][confidence];
   const tracked = useMemo(() => Object.keys(keywordMap).sort(), [keywordMap]);
   const [text, setText] = useState('');
   const [overrides, setOverrides] = useState<Record<string, string>>({});
@@ -151,12 +168,12 @@ export default function BulkAddDialog({
           <div className="kba-left">
             <label className="kba-label" htmlFor="kba-text">Ключи — через запятую или с новой строки</label>
             <textarea id="kba-text" className="ds-textarea kba-text" autoFocus value={text} onChange={(event) => setText(event.target.value)}
-              placeholder={'visor dicom, dicom viewer\nпросмотр dicom'} rows={5} />
+              placeholder={'party games, game for couples\ngra dla 2'} rows={5} />
             <div className="kba-parsed">
               {n ? <>
                 <span><b>{n}</b> {plural(n, 'ключ', 'ключа', 'ключей')}</span>
                 {parsed.duplicates > 0 && <span className="ds-badge ds-badge-muted">дубли убраны: {parsed.duplicates}</span>}
-                {languages.map((lang) => <span key={lang} className="ds-badge">{LANGUAGE_LABEL[lang] ?? lang}</span>)}
+                {languages.map((lang) => <span key={lang} className="ds-badge">{languageLabel(lang)}</span>)}
               </> : <span className="ds-note">Язык каждого ключа определяется автоматически: по письменности, буквам и частым словам.</span>}
             </div>
             <div className="kba-keywords" role="list">
@@ -168,11 +185,11 @@ export default function BulkAddDialog({
                     <select className="ds-select kba-lang" value={item.lang} aria-label={`Язык ключа ${item.keyword}`}
                       onChange={(event) => setOverrides((current) => ({ ...current, [tagKey(item.keyword)]: event.target.value }))}
                       {...tipProps(item.keyword, [
-                        [null, 'Письменность', SCRIPT_LABEL[item.detected.script]],
-                        [null, 'Язык', `${LANGUAGE_LABEL[item.detected.lang] ?? item.detected.lang} — ${CONFIDENCE[item.detected.confidence]}`],
+                        [null, 'Письменность', scriptLabel(item.detected.script)],
+                        [null, 'Язык', `${languageLabel(item.detected.lang)} — ${confidenceLabel(item.detected.confidence)}`],
                         [null, 'Индексируют', `${storefrontsForLanguage(item.lang, tracked).length} из ${tracked.length} отслеживаемых витрин`],
                       ])}>
-                      {Object.entries(LANGUAGE_LABEL).map(([code, label]) => <option key={code} value={code}>{label}</option>)}
+                      {Object.keys(LANGUAGE_LABEL).map((code) => <option key={code} value={code}>{languageLabel(code)}</option>)}
                     </select>
                     {scope === 'targeted' && (
                     <span className="kba-kw-stat" {...tipProps(item.keyword, [
@@ -194,7 +211,7 @@ export default function BulkAddDialog({
             <p>Ключ отслеживается во всех {tracked.length} {plural(tracked.length, 'стране', 'странах', 'странах')} приложения и автоматически — в странах, добавленных позже. Удаление общего ключа убирает его отовсюду.</p>
             <p className="kba-global-muted">Для бренда, названий конкурентов и английских терминов. Локализованные фразы («визуализатор dicom», «ct ビューア») лучше добавлять «В выбранные» — в страны своего языка.</p>
             {languages.some((lang) => lang !== 'en') && (
-              <p className="kba-global-hint">Среди ключей есть не английские ({languages.filter((lang) => lang !== 'en').map((lang) => LANGUAGE_LABEL[lang] ?? lang).join(', ')}). <button type="button" className="ds-btn ds-btn-sm" onClick={() => { setScope('targeted'); setLanguageOnly(true); setTouched(false); }}>В страны их языка</button></p>
+              <p className="kba-global-hint">Среди ключей есть не английские ({languages.filter((lang) => lang !== 'en').map(languageLabel).join(', ')}). <button type="button" className="ds-btn ds-btn-sm" onClick={() => { setScope('targeted'); setLanguageOnly(true); setTouched(false); }}>В страны их языка</button></p>
             )}
           </div>
           ) : (
